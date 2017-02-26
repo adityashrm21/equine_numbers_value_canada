@@ -18,24 +18,48 @@ shinyUI(fluidPage(
   # Application title
   titlePanel("Historical horse population data from Canada \n (1914 - 1972)"),
   
+  # # add panel that contains slider & drop down menu, as well as line plot
+  # absolutePanel(top = 60, left = "auto", right = 20, bottom = "auto",
+  #               width = 330, height = "auto",
+  #               
+  #               selectInput(inputId = "region",
+  #                           label = "Number of bins:",
+  #                           choices = possible_regions),
+  #               
+  #               sliderInput(inputId = "year",
+  #                           label = "Year:",
+  #                           min = 1914,
+  #                           max = 1972,
+  #                           value = 1914,
+  #                           sep = ""),
+  #               
+  #               plotOutput("horse_pop_Plot")
+  # )
+  
   # Sidebar with a slider input for number of bins
-  sidebarLayout(
-    sidebarPanel(
-      selectInput(inputId = "region",
+   sidebarLayout(
+     sidebarPanel(
+       selectInput(inputId = "region",
                   label = "Number of bins:",
                   choices = possible_regions),
+
+      plotOutput("horse_pop_Plot")
+    ),
+    
+    
+    # put map in main panel entire background
+    mainPanel(
+      leafletOutput("horse_pop_map"),
+      
       sliderInput(inputId = "year",
                   label = "Year:",
                   min = 1914,
                   max = 1972,
                   value = 1914,
-                  sep = "")
-    ),
+                  sep = "", 
+                  width='100%')
+      )
 
-    # Show a plot of the generated distribution
-    mainPanel(
-      plotOutput("horse_pop_Plot"),
-      leafletOutput("horse_pop_map")
-    )
   )
-))
+  )
+)

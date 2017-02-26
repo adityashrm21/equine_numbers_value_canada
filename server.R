@@ -54,7 +54,7 @@ shinyServer(function(input, output) {
     # merge data with canada data
     canada_year <- merge(canada, horse_pop_year, by.x = "Name", by.y = "GEO")
     
-    pal <- colorQuantile("YlGn", NULL, n = 5)
+    pal <- colorNumeric("YlGn", NULL, n = 5)
 
     # create pop_up data
     prov_popup <- paste0("<strong>Province: </strong>",
@@ -65,11 +65,17 @@ shinyServer(function(input, output) {
     # create map
     leaflet(data = canada_year) %>%
       addProviderTiles("CartoDB.Positron") %>%
+      setView(lat = 62, lng = -105, zoom = 3) %>% 
       addPolygons(fillColor = ~pal(Value),
                   fillOpacity = 0.8,
                   color = "#BDBDC3",
                   weight = 1,
-                  popup = prov_popup)
+                  popup = prov_popup) %>% 
+      addLegend(pal = pal, 
+                values = ~ Value,  
+                opacity = 0.7, 
+                title = "Number of horses:",
+                position = "topright")
 
   })
 
