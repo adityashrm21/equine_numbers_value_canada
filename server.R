@@ -20,7 +20,7 @@ horse_pop <- filter(horse_pop,
                     DATE == "At June 1 (x 1,000)")
 horse_pop$Value <- horse_pop$Value * 1000
 
-
+# create plot & map outputs that change based on user inputs
 shinyServer(function(input, output) {
   
   output$horse_pop_Plot <- renderPlot({
