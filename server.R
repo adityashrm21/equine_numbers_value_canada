@@ -7,6 +7,7 @@ library(tidyverse)
 library(leaflet)
 library(geojsonio)
 
+
 # load data
 canada <- geojsonio::geojson_read("data/canada.geojson", what = "sp")
 
@@ -47,7 +48,7 @@ shinyServer(function(input, output) {
       select(GEO, Value)
 
     # merge data with canada data
-    canada_year <- merge(canada, horse_pop_year, by.x = "NAME", by.y = "GEO")
+    canada_year <- sp::merge(canada, horse_pop_year, by.x = "NAME", by.y = "GEO")
     
     #create colour pallete for chloropleth map
     pal <- colorNumeric("YlGn", NULL, n = 5)
