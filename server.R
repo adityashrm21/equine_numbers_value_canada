@@ -42,12 +42,9 @@ shinyServer(function(input, output) {
   })
   
   output$horse_pop_map <- renderLeaflet({
-    # get year of interest from input
-    year <- input$year
-
-    #filter to desired year
+    #filter to 1914 (default year)
     horse_pop_year <- filter(horse_pop,
-                             Ref_Date == year,
+                             Ref_Date == 1914,
                              GEO != "Canada") %>% 
       select(GEO, Value)
 
@@ -70,7 +67,7 @@ shinyServer(function(input, output) {
                   fillOpacity = 0.8,
                   color = "#BDBDC3",
                   weight = 1,
-                  popup = prov_popup) %>% 
+                  popup = prov_popup) %>%
       addLegend(pal = pal, 
                 values = ~ Value,  
                 opacity = 0.7, 
@@ -78,5 +75,38 @@ shinyServer(function(input, output) {
                 position = "topright")
 
   })
+  
+  observe({
+    
+    # get year of interest from input
+    year <- input$year
+    
+    #filter to desired year
+    horse_pop_year <- filter(horse_pop,
+                             Ref_Date == year,
+                             GEO != "Canada") %>% 
+      select(GEO, Value)
+    
+    # merge data with canada data
+    canada_year <- merge(canada, horse_pop_year, by.x = "Name", by.y = "GEO")
+    
+    pal <- colorNumeric("YlGn", NULL, n = 5)
+    
+    # create pop_up data
+    prov_popup <- paste0("<strong>Province: </strong>",
+                         canada_year@data$Name,
+                         "<br><strong>Number of horses: </strong>",
+                         canada_year@data$Value)
+    
+    leafletProxy("horse_pop_map", data = canada_year) %>%
+      clearShapes() %>%
+      addPolygons(fillColor = ~pal(Value),
+                              fillOpacity = 0.8,
+                              color = "#BDBDC3",
+                              weight = 1,
+                              popup = prov_popup)
+      
+  })
+
 
 })
