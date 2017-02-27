@@ -70,44 +70,8 @@ shinyServer(function(input, output) {
       addLegend(pal = pal, 
                 values = ~ Value,  
                 opacity = 0.7, 
-                title = "Number of horses:",
+                title = paste0("Number of horses (",  input$year, ")"),
                 position = "topright")
 
   })
-  
-  observe({
-    
-    # get year of interest from input
-    year <- input$year
-    
-    #filter to desired year
-    horse_pop_year <- filter(horse_pop,
-                             Ref_Date == year,
-                             GEO != "Canada") %>% 
-      select(GEO, Value)
-    
-    # merge data with canada data
-    canada_year <- merge(canada, horse_pop_year, by.x = "NAME", by.y = "GEO")
-    
-    #create colour pallete for chloropleth map
-    pal <- colorNumeric("YlGn", NULL, n = 5)
-    
-    # create pop_up data
-    prov_popup <- paste0("<strong>Province: </strong>",
-                         canada_year@data$NAME,
-                         "<br><strong>Number of horses: </strong>",
-                         canada_year@data$Value)
-    
-    # clears old polygons and redraws new ones
-    leafletProxy("horse_pop_map", data = canada_year) %>%
-      clearShapes() %>%
-      addPolygons(fillColor = ~pal(Value),
-                              fillOpacity = 0.8,
-                              color = "#BDBDC3",
-                              weight = 1,
-                              popup = prov_popup)
-      
-  })
-
-
 })

@@ -13,7 +13,7 @@ possible_regions <- unique(horse_pop$GEO)
 shinyUI(fluidPage(
 
   # Application title
-  titlePanel("Historical horse population data from Canada \n (1914 - 1972)"),
+  titlePanel("Historical horse population data from Canada \n (1906 - 1972)"),
   
   # Sidebar with a slider input for number of bins
    sidebarLayout(
