@@ -19,7 +19,7 @@ shinyUI(fluidPage(
    sidebarLayout(
      sidebarPanel(
        selectInput(inputId = "region",
-                  label = "Number of bins:",
+                  label = "Geographic region:",
                   choices = possible_regions),
 
       plotOutput("horse_pop_Plot")
