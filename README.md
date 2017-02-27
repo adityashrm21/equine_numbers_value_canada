@@ -8,3 +8,10 @@ Horse population data were sourced from the [Government of Canada's Open Data we
 - [Horses, number on farms at June 1, farm value per head and total farm value](http://open.canada.ca/data/en/dataset/b374f60b-9580-44dc-83f6-c0a850c15f30)
 
 Map data was sourced from [mapstarter.com](http://mapstarter.com/).
+
+Dependencies:
+- R and R packages:
+  - shiny
+  - tidyverse
+  - leaflet
+  - geojsonio

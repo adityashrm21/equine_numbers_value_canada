@@ -54,9 +54,9 @@ shinyServer(function(input, output) {
 
     # create pop_up data
     prov_popup <- paste0("<strong>Province: </strong>",
-                         canada_year@data$NAME,
+                         canada_year$data$NAME,
                           "<br><strong>Number of horses: </strong>",
-                         canada_year@data$Value)
+                         canada_year$data$Value)
 
     # create map
     leaflet(data = canada_year) %>%
