@@ -1,9 +1,6 @@
-
-# This is the server logic for a Shiny web application.
-# You can find out more about building applications with Shiny here:
-#
-# http://shiny.rstudio.com
-#
+# server logics code for equine_numbers_value_canada shiny app
+# author: Tiffany A. Timbers
+# created: Feb 27, 2017
 
 library(shiny)
 library(tidyverse)
