@@ -9,6 +9,8 @@ library(tidyverse)
 # get possible regions
 horse_pop <- read_csv("data/00030067-eng.csv")
 possible_regions <- unique(horse_pop$GEO)
+possible_regions <- c(possible_regions[1], sort(possible_regions[-1]))
+
 
 shinyUI(fluidPage(
 
