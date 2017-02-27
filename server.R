@@ -8,12 +8,10 @@
 library(shiny)
 library(tidyverse)
 library(leaflet)
-library(rgdal)
+library(geojsonio)
 
 # load data
-canada <- readOGR("data/CanadianProvinces.kml",
-                  "CanadianProvinces3",
-                  encoding="utf-8")
+canada <- geojsonio::geojson_read("data/canada.geojson", what = "sp")
 
 horse_pop <- read_csv("data/00030067-eng.csv")
 horse_pop <- filter(horse_pop,
@@ -42,20 +40,24 @@ shinyServer(function(input, output) {
   })
   
   output$horse_pop_map <- renderLeaflet({
-    #filter to 1914 (default year)
+    # get year of interest from input
+    year <- input$year
+    
+    #filter to desired year
     horse_pop_year <- filter(horse_pop,
-                             Ref_Date == 1914,
+                             Ref_Date == year,
                              GEO != "Canada") %>% 
       select(GEO, Value)
 
     # merge data with canada data
-    canada_year <- merge(canada, horse_pop_year, by.x = "Name", by.y = "GEO")
+    canada_year <- merge(canada, horse_pop_year, by.x = "NAME", by.y = "GEO")
     
+    #create colour pallete for chloropleth map
     pal <- colorNumeric("YlGn", NULL, n = 5)
 
     # create pop_up data
     prov_popup <- paste0("<strong>Province: </strong>",
-                         canada_year@data$Name,
+                         canada_year@data$NAME,
                           "<br><strong>Number of horses: </strong>",
                          canada_year@data$Value)
 
@@ -88,16 +90,18 @@ shinyServer(function(input, output) {
       select(GEO, Value)
     
     # merge data with canada data
-    canada_year <- merge(canada, horse_pop_year, by.x = "Name", by.y = "GEO")
+    canada_year <- merge(canada, horse_pop_year, by.x = "NAME", by.y = "GEO")
     
+    #create colour pallete for chloropleth map
     pal <- colorNumeric("YlGn", NULL, n = 5)
     
     # create pop_up data
     prov_popup <- paste0("<strong>Province: </strong>",
-                         canada_year@data$Name,
+                         canada_year@data$NAME,
                          "<br><strong>Number of horses: </strong>",
                          canada_year@data$Value)
     
+    # clears old polygons and redraws new ones
     leafletProxy("horse_pop_map", data = canada_year) %>%
       clearShapes() %>%
       addPolygons(fillColor = ~pal(Value),

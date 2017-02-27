@@ -28,9 +28,9 @@ shinyUI(fluidPage(
   #               
   #               sliderInput(inputId = "year",
   #                           label = "Year:",
-  #                           min = 1914,
+  #                           min = 1906,
   #                           max = 1972,
-  #                           value = 1914,
+  #                           value = 1906,
   #                           sep = ""),
   #               
   #               plotOutput("horse_pop_Plot")
@@ -53,9 +53,9 @@ shinyUI(fluidPage(
       
       sliderInput(inputId = "year",
                   label = "Year:",
-                  min = 1914,
+                  min = 1906,
                   max = 1972,
-                  value = 1914,
+                  value = 1906,
                   sep = "", 
                   width='100%')
       )
